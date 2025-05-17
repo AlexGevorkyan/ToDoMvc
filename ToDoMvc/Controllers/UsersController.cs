@@ -24,6 +24,16 @@ namespace ToDoMvc.Controllers
             return View(await _context.User.ToListAsync());
         }
 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public IActionResult Login(string username, string password)
+        {
+            return View();
+        }
     }
 }
