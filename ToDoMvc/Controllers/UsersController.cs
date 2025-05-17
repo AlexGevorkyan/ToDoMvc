@@ -25,10 +25,23 @@ namespace ToDoMvc.Controllers
         }
 
         [HttpGet]
+
         public IActionResult Login()
         {
             return View();
         }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Register(User user)
+        {
+            return View(user);
+        }
+
 
         [HttpPost]
         public IActionResult Login(string username, string password)
