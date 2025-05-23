@@ -23,30 +23,49 @@ namespace ToDoMvc.Controllers
         {
             return View(await _context.User.ToListAsync());
         }
-
+        // -----------------------------------------------------------------------
         [HttpGet]
-
-        public IActionResult Login()
-        {
-            return View();
-        }
-
         public IActionResult Register()
         {
             return View();
         }
-
+        // -----------------------------------------------------------------------
+        // Наступний метод забирає дані із цієї форми і обробляє їх :
         [HttpPost]
         public IActionResult Register(User user)
         {
-            return View(user);
+            _context.User.Add(user);
+            _context.SaveChanges();
+            return RedirectToAction("Login");
         }
-
-
-        [HttpPost]
-        public IActionResult Login(string username, string password)
+        // -----------------------------------------------------------------------
+        [HttpGet]
+        public IActionResult Login()
         {
             return View();
         }
+        // -----------------------------------------------------------------------
+        [HttpPost]
+        public IActionResult Login(string email, string password)
+        {
+            User user = _context.User.Where(u => u.Email == email && u.Password == password).FirstOrDefault();
+            if (user == null)
+            {
+                return View();  // якщо юзер не залогінився, то тоді відправлю його знову на форму логіну
+            }
+            else  // якщо юзер успішно залогінився
+            {
+                /* Я зараз створимо сесію, і в сесію запишемо ідентифікатор юзера і його ім’я. 
+                   Спочатку звернуся до класу HttpContext до проперті Session. 
+                   Зараз ми в сесію запишу Id-шник юзера як key-value-пару. 
+                   Ключ назову LoggedId, а в якості значення записую Id-шник юзера :     */
+                HttpContext.Session.SetInt32("LoggedId", user.Id);
+
+                HttpContext.Session.SetString("LoggedId", user.Email);
+
+                return RedirectToAction("Index");
+            }
+        }
+        // -----------------------------------------------------------------------
     }
 }

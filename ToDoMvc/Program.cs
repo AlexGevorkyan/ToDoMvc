@@ -14,6 +14,14 @@ namespace ToDoMvc
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            // щоб працювати із сесіями, їх потрібно зареєструвати : 
+            builder.Services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(8);
+                options.Cookie.IsEssential = true;
+                options.Cookie.HttpOnly = true;
+            });
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -26,6 +34,8 @@ namespace ToDoMvc
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",

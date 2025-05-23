@@ -22,7 +22,7 @@ namespace ToDoMvc.Controllers
         // GET: Todos
         public async Task<IActionResult> Index()
         {
-            var toDoContext = _context.Todo.Include(t => t.User);
+            IQueryable<Todo> toDoContext = _context.Todo.Include(t => t.User);
             return View(await toDoContext.ToListAsync());
         }
     }
